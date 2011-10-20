@@ -1,5 +1,7 @@
 package com.gmail.gbmekp.fm.gui;
 
+import java.awt.BorderLayout;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -13,8 +15,8 @@ import javax.swing.JMenuItem;
  */
 public class MainFrame extends JFrame {
 	private static final long serialVersionUID = 501818573355567849L;
-	private static final int WIDTH = 640;
-	private static final int HEIGHT = 480;
+	private static final int WIDTH = 740;
+	private static final int HEIGHT = 530;
 	private static final String TITLE = "Моделирование фракталов";
 	
 	
@@ -55,6 +57,10 @@ public class MainFrame extends JFrame {
 
 
 	private void initComponents() {
-		
+	    setLayout(new BorderLayout());
+	    
+		ImagePanel comp = new ImagePanel();
+        add(comp, BorderLayout.CENTER);
+		add(new ControlPanel(comp), BorderLayout.EAST);
 	}
 }
