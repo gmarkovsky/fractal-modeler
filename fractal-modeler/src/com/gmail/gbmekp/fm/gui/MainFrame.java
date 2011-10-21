@@ -1,6 +1,8 @@
 package com.gmail.gbmekp.fm.gui;
 
-import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -15,7 +17,7 @@ import javax.swing.JMenuItem;
  */
 public class MainFrame extends JFrame {
 	private static final long serialVersionUID = 501818573355567849L;
-	private static final int WIDTH = 740;
+	private static final int WIDTH = 800;
 	private static final int HEIGHT = 530;
 	private static final String TITLE = "Моделирование фракталов";
 	
@@ -57,10 +59,14 @@ public class MainFrame extends JFrame {
 
 
 	private void initComponents() {
-	    setLayout(new BorderLayout());
+	    setLayout(new GridBagLayout());
 	    
 		ImagePanel comp = new ImagePanel();
-        add(comp, BorderLayout.CENTER);
-		add(new ControlPanel(comp), BorderLayout.EAST);
+        add(comp, new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH, 
+                new Insets(0, 0, 0, 0), 0, 0));
+        add(new ControlPanel(comp), new GridBagConstraints(1, 0, 1, 1, 0.3, 1.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH, 
+                new Insets(0, 0, 0, 0), 0, 0));
 	}
 }
