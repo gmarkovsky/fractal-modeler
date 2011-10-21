@@ -52,6 +52,8 @@ public class ControlPanel extends JPanel {
         initComponents();
         initListeners();
         initData();
+        
+        lSystems.setSelectedIndex(5);
     }
 
 
@@ -71,7 +73,7 @@ public class ControlPanel extends JPanel {
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, 
                 new Insets(0, 0, 0, 0), 0, 0));
         
-        deltaAngle = new JSpinner(new SpinnerNumberModel(45, 1, 90, 1));
+        deltaAngle = new JSpinner(new SpinnerNumberModel(35, 1, 90, 1));
         
         add(new JLabel("Изменение угла"), new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, 
@@ -89,7 +91,7 @@ public class ControlPanel extends JPanel {
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, 
                 new Insets(0, 0, 0, 0), 0, 0));
         
-        iteration = new JSpinner(new SpinnerNumberModel(1, 1, 10, 1));
+        iteration = new JSpinner(new SpinnerNumberModel(3, 1, 10, 1));
         
         add(new JLabel("Шагов"), new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, 
@@ -163,6 +165,8 @@ public class ControlPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 initFields((LSystem) lSystems.getSelectedItem());
+                if (isDisplayable())
+                paintFractal();
             }
         });
         angle.getModel().addChangeListener(new ChangeListener() {
@@ -205,7 +209,7 @@ public class ControlPanel extends JPanel {
                 {"X", "F[+X]F[-X]+X"}}, "Sticks"));
     }
     
-    private void paintFractal() {
+    public void paintFractal() {
         int depth = (Integer) iteration.getValue();
         int dAng = (Integer) deltaAngle.getValue();
         int ang = (Integer) angle.getValue();

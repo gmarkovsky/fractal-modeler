@@ -20,6 +20,7 @@ public class MainFrame extends JFrame {
 	private static final int WIDTH = 800;
 	private static final int HEIGHT = 530;
 	private static final String TITLE = "Моделирование фракталов";
+    private ControlPanel controls;
 	
 	
 	public MainFrame() {
@@ -65,7 +66,8 @@ public class MainFrame extends JFrame {
         add(comp, new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0,
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH, 
                 new Insets(0, 0, 0, 0), 0, 0));
-        add(new ControlPanel(comp), new GridBagConstraints(1, 0, 1, 1, 0.0, 1.0,
+        controls = new ControlPanel(comp);
+        add(controls, new GridBagConstraints(1, 0, 1, 1, 0.0, 1.0,
                 GridBagConstraints.EAST, GridBagConstraints.VERTICAL, 
                 new Insets(0, 0, 0, 0), 0, 0));
 	}
