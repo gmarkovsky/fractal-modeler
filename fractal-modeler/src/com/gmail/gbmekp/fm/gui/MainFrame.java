@@ -65,8 +65,8 @@ public class MainFrame extends JFrame {
         add(comp, new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0,
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH, 
                 new Insets(0, 0, 0, 0), 0, 0));
-        add(new ControlPanel(comp), new GridBagConstraints(1, 0, 1, 1, 0.3, 1.0,
-                GridBagConstraints.CENTER, GridBagConstraints.BOTH, 
+        add(new ControlPanel(comp), new GridBagConstraints(1, 0, 1, 1, 0.0, 1.0,
+                GridBagConstraints.EAST, GridBagConstraints.VERTICAL, 
                 new Insets(0, 0, 0, 0), 0, 0));
 	}
 }
