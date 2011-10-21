@@ -12,7 +12,7 @@ public class ImagePanel extends JPanel {
     private Image image;
     
     public ImagePanel() {
-        
+
     }
     
     public void setImage(Image image) {
