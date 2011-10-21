@@ -8,6 +8,8 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
@@ -32,6 +34,7 @@ import com.gmail.gbmekp.fm.engine.Painter;
 public class ControlPanel extends JPanel {
     private static final long serialVersionUID = 2183516033772822907L;
     private JTextField axiom;
+    private JSpinner deltaAngle;
     private JSpinner angle;
     private JSpinner iteration;
     
@@ -68,27 +71,36 @@ public class ControlPanel extends JPanel {
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, 
                 new Insets(0, 0, 0, 0), 0, 0));
         
-        angle = new JSpinner(new SpinnerNumberModel(45, 1, 90, 1));
+        deltaAngle = new JSpinner(new SpinnerNumberModel(45, 1, 90, 1));
         
-        add(new JLabel("Угол"), new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0,
+        add(new JLabel("Изменение угла"), new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, 
                 new Insets(0, 0, 0, 0), 0, 0));
-        add(angle, new GridBagConstraints(1, 3, 1, 1, 1.0, 0.0,
+        add(deltaAngle, new GridBagConstraints(1, 3, 1, 1, 1.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, 
+                new Insets(0, 0, 0, 0), 0, 0));
+        
+        angle = new JSpinner(new SpinnerNumberModel(0, 0, 90, 1));
+        
+        add(new JLabel("Угол"), new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0,
+                GridBagConstraints.WEST, GridBagConstraints.NONE, 
+                new Insets(0, 0, 0, 0), 0, 0));
+        add(angle, new GridBagConstraints(1, 4, 1, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, 
                 new Insets(0, 0, 0, 0), 0, 0));
         
         iteration = new JSpinner(new SpinnerNumberModel(1, 1, 10, 1));
         
-        add(new JLabel("Шагов"), new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0,
+        add(new JLabel("Шагов"), new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, 
                 new Insets(0, 0, 0, 0), 0, 0));
-        add(iteration, new GridBagConstraints(1, 4, 1, 1, 1.0, 0.0,
+        add(iteration, new GridBagConstraints(1, 5, 1, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, 
                 new Insets(0, 0, 0, 0), 0, 0));
         
         paint = new JButton("Нарисовать");
         
-        add(paint, new GridBagConstraints(0, 5, 2, 1, 1.0, 0.0,
+        add(paint, new GridBagConstraints(0, 6, 2, 1, 1.0, 0.0,
                 GridBagConstraints.EAST, GridBagConstraints.NONE, 
                 new Insets(0, 0, 0, 0), 0, 0));
         
@@ -101,8 +113,9 @@ public class ControlPanel extends JPanel {
         table.getColumnModel().getColumn(0).setWidth(40);
         table.getColumnModel().getColumn(1).setWidth(100);
         table.getColumnModel().getColumn(1).setPreferredWidth(100);
+        table.setFillsViewportHeight(true);
         add(panel, new GridBagConstraints(0, 2, 2, 1, 1.0, 1.0,
-                GridBagConstraints.CENTER, GridBagConstraints.BOTH, 
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(0, 0, 0, 0), 0, 0));
         
 
@@ -138,7 +151,7 @@ public class ControlPanel extends JPanel {
                 paintFractal();
             }
         });
-        angle.getModel().addChangeListener(new ChangeListener() {
+        deltaAngle.getModel().addChangeListener(new ChangeListener() {
             
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -152,6 +165,22 @@ public class ControlPanel extends JPanel {
                 initFields((LSystem) lSystems.getSelectedItem());
             }
         });
+        angle.getModel().addChangeListener(new ChangeListener() {
+            
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                paintFractal();
+            }
+        });
+        
+        table.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		if (e.getClickCount() == 2) {
+        			((DefaultTableModel) table.getModel()).setRowCount(table.getRowCount() + 1);
+        		}
+        	}
+        });
     }
 
     private void initData() {
@@ -163,11 +192,22 @@ public class ControlPanel extends JPanel {
                 {"F", ""}}, "Cross"));
         lSystems.addItem(new LSystem("[F]+[F]+[F]+[F]+[F]+[F]", new String[][]{
                 {"F", "F[++F][--F][-FF][+FF]FF[+F][-F]FF"}}, "Snowflake"));
+        lSystems.addItem(new LSystem("Y", new String[][]{
+                {"X", "X[-FFF][+FFF]FX"},
+                {"Y", "YFX[+Y][-Y]"}}, "Bush1"));
         
+        lSystems.addItem(new LSystem("F", new String[][]{
+                {"F", "FF+[+F-F-F]-[-F+F+F]"}}, "Bush2"));
+        lSystems.addItem(new LSystem("F", new String[][]{
+                {"F", "F[+FF][-FF]F[-F][+F]F"}}, "Bush3"));
+        lSystems.addItem(new LSystem("X", new String[][]{
+                {"F", "FF"},
+                {"X", "F[+X]F[-X]+X"}}, "Sticks"));
     }
     
     private void paintFractal() {
         int depth = (Integer) iteration.getValue();
+        int dAng = (Integer) deltaAngle.getValue();
         int ang = (Integer) angle.getValue();
         String a = axiom.getText();
         
@@ -177,9 +217,9 @@ public class ControlPanel extends JPanel {
             ss[i][0] = (String) table.getValueAt(i, 0);
             ss[i][1] = (String) table.getValueAt(i, 1);
         }
-        
-        Image image = Painter.draw(new LSystem(a, ss),
-            Math.PI * ang/ 180, depth);
+
+        Image image = Painter.draw(imagePanel.getWidth(), imagePanel.getHeight(), 10,
+        		new LSystem(a, ss), Math.PI * dAng/ 180, depth, Math.PI * ang/ 180);
         imagePanel.setImage(image);
         imagePanel.repaint();
     }
