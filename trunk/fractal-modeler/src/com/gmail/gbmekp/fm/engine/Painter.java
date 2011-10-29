@@ -15,16 +15,16 @@ public class Painter {
     }
 
     public static Image draw(LSystem lSystem, double deltaAngle, int depth, double alpha) {
-        return draw(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_BORDER, lSystem, deltaAngle, depth, 0);
+        return draw(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_BORDER, lSystem, deltaAngle, depth, 0, false);
     }
 
     public static Image draw(int width, int height, int border, LSystem lSystem, double deltaAngle, int depth) {
-        return draw(width, height, border, lSystem, deltaAngle, depth, 0);
+        return draw(width, height, border, lSystem, deltaAngle, depth, 0, false);
     }
 
-    public static Image draw(int width, int height, int border, LSystem lSystem, double deltaAngle, int depth, double alpha) {
+    public static Image draw(int width, int height, int border, LSystem lSystem, double deltaAngle, int depth, double alpha, boolean force) {
         BoundCanvas boundCanvas = new BoundCanvas();
-        Turtle boundTurtle = new Turtle(boundCanvas, 1, deltaAngle);
+        Turtle boundTurtle = new Turtle(boundCanvas, 1, deltaAngle, force);
         boundTurtle.draw(lSystem.getResult(depth), new State(0, 0, alpha));
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         double scale = Math.min(
@@ -37,7 +37,7 @@ public class Painter {
         imageGraphics.fillRect(0, 0, width, height);
         imageGraphics.setColor(Color.BLACK);
         GraphicCanvas graphicCanvas = new GraphicCanvas(imageGraphics);
-        Turtle graphicTurtle = new Turtle(graphicCanvas, scale, deltaAngle);
+        Turtle graphicTurtle = new Turtle(graphicCanvas, scale, deltaAngle, force);
         graphicTurtle.draw(lSystem.getResult(depth), new State(x, y, alpha));
         return image;
     }
