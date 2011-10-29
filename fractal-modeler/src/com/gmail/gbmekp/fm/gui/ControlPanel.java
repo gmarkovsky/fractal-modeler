@@ -15,6 +15,7 @@ import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -37,6 +38,8 @@ public class ControlPanel extends JPanel {
     private JSpinner deltaAngle;
     private JSpinner angle;
     private JSpinner iteration;
+    
+    private JCheckBox force;
     
     private JComboBox lSystems;
     
@@ -82,7 +85,7 @@ public class ControlPanel extends JPanel {
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, 
                 new Insets(0, 0, 0, 0), 0, 0));
         
-        angle = new JSpinner(new SpinnerNumberModel(0, 0, 90, 1));
+        angle = new JSpinner(new SpinnerNumberModel(90, 0, 90, 1));
         
         add(new JLabel("Угол"), new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, 
@@ -103,6 +106,11 @@ public class ControlPanel extends JPanel {
         paint = new JButton("Нарисовать");
         
         add(paint, new GridBagConstraints(0, 6, 2, 1, 1.0, 0.0,
+                GridBagConstraints.EAST, GridBagConstraints.NONE, 
+                new Insets(0, 0, 0, 0), 0, 0));
+        
+        force = new JCheckBox("Поле");
+        add(force, new GridBagConstraints(0, 7, 2, 1, 1.0, 0.0,
                 GridBagConstraints.EAST, GridBagConstraints.NONE, 
                 new Insets(0, 0, 0, 0), 0, 0));
         
@@ -185,6 +193,13 @@ public class ControlPanel extends JPanel {
         		}
         	}
         });
+        force.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				paintFractal();
+			}
+		});
     }
 
     private void initData() {
@@ -204,9 +219,36 @@ public class ControlPanel extends JPanel {
                 {"F", "FF+[+F-F-F]-[-F+F+F]"}}, "Bush2"));
         lSystems.addItem(new LSystem("F", new String[][]{
                 {"F", "F[+FF][-FF]F[-F][+F]F"}}, "Bush3"));
-        lSystems.addItem(new LSystem("X", new String[][]{
+        LSystem anObject = new LSystem("X", new String[][]{
                 {"F", "FF"},
-                {"X", "F[+X]F[-X]+X"}}, "Sticks"));
+                {"X", "F[+X]F[-X]+X"}}, "Sticks");
+		lSystems.addItem(anObject);
+		
+//		ByteArrayOutputStream write = LSystemSerializer.write(anObject);
+//		FileOutputStream fw = null;
+//		try {
+//			fw = new FileOutputStream("/home/george/lsdd.xml");
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		}
+//		try {
+//			write.writeTo(fw);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//        FileInputStream fr = null;
+//		try {
+//			fr = new FileInputStream("/home/george/lsdd.xml");
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		}
+//        LSystem lss = null;
+//		try {
+//			lss = LSystemSerializer.parse(fr);
+//		} catch (LSystemLoadException e) {
+//			e.printStackTrace();
+//		}
+//        lSystems.addItem(lss);
     }
     
     public void paintFractal() {
@@ -223,7 +265,7 @@ public class ControlPanel extends JPanel {
         }
 
         Image image = Painter.draw(imagePanel.getWidth(), imagePanel.getHeight(), 10,
-        		new LSystem(a, ss), Math.PI * dAng/ 180, depth, Math.PI * ang/ 180);
+        		new LSystem(a, ss), Math.PI * dAng/ 180, depth, Math.PI * ang/ 180, force.isSelected());
         imagePanel.setImage(image);
         imagePanel.repaint();
     }
