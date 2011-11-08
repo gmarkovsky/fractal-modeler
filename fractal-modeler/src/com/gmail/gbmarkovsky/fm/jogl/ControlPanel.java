@@ -1,10 +1,9 @@
-package com.gmail.gbmekp.fm.gui;
+package com.gmail.gbmarkovsky.fm.jogl;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,8 +28,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 
-import com.gmail.gbmekp.fm.engine.LSystem;
-import com.gmail.gbmekp.fm.engine.Painter;
+import com.gmail.gbmarkovsky.fm.jogl.engine.LSystem;
 
 public class ControlPanel extends JPanel {
     private static final long serialVersionUID = 2183516033772822907L;
@@ -43,12 +41,12 @@ public class ControlPanel extends JPanel {
     
     private JComboBox lSystems;
     
-    private final ImagePanel imagePanel;
+    private final MainFrame imagePanel;
     
     private JButton paint;
     private JTable table;
     
-    public ControlPanel(ImagePanel imagePanel) {
+    public ControlPanel(MainFrame imagePanel) {
         super(new GridBagLayout());
         this.imagePanel = imagePanel;
         // TODO Auto-generated constructor stub
@@ -259,7 +257,7 @@ public class ControlPanel extends JPanel {
     public void paintFractal() {
         int depth = (Integer) iteration.getValue();
         int dAng = (Integer) deltaAngle.getValue();
-        int ang = (Integer) angle.getValue();
+        //int ang = (Integer) angle.getValue();
         String a = axiom.getText();
         
         String[][] ss = new String[table.getRowCount()][2];
@@ -271,9 +269,11 @@ public class ControlPanel extends JPanel {
 
         LSystem lSystem = new LSystem(a, ss);
         code.setText(lSystem.getResult(depth));
-		Image image = Painter.draw(imagePanel.getWidth(), imagePanel.getHeight(), 10,
-        		lSystem, Math.PI * dAng/ 180, depth, Math.PI * ang/ 180, force.isSelected());
-        imagePanel.setImage(image);
+        
+        imagePanel.setSystem(lSystem, depth, Math.PI * dAng/ 180);
+        
+//		Image image = Painter.draw(imagePanel.getWidth(), imagePanel.getHeight(), 10,
+//        		lSystem, Math.PI * dAng/ 180, depth, Math.PI * ang/ 180, force.isSelected());
         imagePanel.repaint();
     }
     
