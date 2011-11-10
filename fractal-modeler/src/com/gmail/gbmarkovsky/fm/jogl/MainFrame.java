@@ -1,6 +1,8 @@
 package com.gmail.gbmarkovsky.fm.jogl;
 
-import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 import javax.media.opengl.GLCanvas;
 import javax.swing.JFrame;
@@ -15,17 +17,24 @@ public class MainFrame extends JFrame {
 	
 	public MainFrame() {
 		super("Простое использование OpenGL в Java");
-        setSize(500, 500);
+        setSize(700, 500);
 
         canvas = new GLCanvas();
         listener = new SimpleRenderer(canvas);
 		canvas.addGLEventListener(listener);
         addMouseWheelListener(listener);
-        add(canvas, BorderLayout.CENTER);
+        //add(canvas, BorderLayout.CENTER);
         controlPanel = new ControlPanel(this);
-        add(controlPanel, BorderLayout.EAST);
+        //add(controlPanel, BorderLayout.EAST);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new GridBagLayout());
+        add(canvas, new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH, 
+                new Insets(0, 0, 0, 0), 0, 0));
+        add(controlPanel, new GridBagConstraints(1, 0, 1, 1, 0.0, 1.0,
+                GridBagConstraints.EAST, GridBagConstraints.VERTICAL, 
+                new Insets(0, 0, 0, 0), 0, 0));
 	}
 	
 	public void setSystem(LSystem lSystem, int depth, double dAng) {

@@ -2,16 +2,18 @@ package com.gmail.gbmarkovsky.fm.jogl.engine;
 
 import java.util.Stack;
 
-import com.gmail.gbmarkovsky.fm.jogl.SimpleRenderer;
+import com.gmail.gbmarkovsky.fm.jogl.LineCanvas;
+import com.gmail.gbmekp.fm.engine.Vector;
 
 public class Turtle {
-    private final SimpleRenderer canvas;
+	private final Vector forceVector = new Vector(0, -1);
+    private final LineCanvas canvas;
     private State state;
     private Stack<State> memory = new Stack<State>();
     private final double stepLength;
     private final double deltaAngle;
 
-    public Turtle(SimpleRenderer canvas, double stepLength, double deltaAngle) {
+    public Turtle(LineCanvas canvas, double stepLength, double deltaAngle) {
         this.canvas = canvas;
         this.stepLength = stepLength;
         this.deltaAngle = deltaAngle;
