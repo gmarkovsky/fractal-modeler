@@ -12,17 +12,19 @@ import com.gmail.gbmarkovsky.fm.jogl.engine.LSystem;
 import com.gmail.gbmarkovsky.fm.jogl.engine.State;
 import com.gmail.gbmarkovsky.fm.jogl.engine.Turtle;
 
-public class SimpleRenderer implements GLEventListener, MouseWheelListener {
+public class SimpleRenderer implements GLEventListener, MouseWheelListener, LineCanvas {
     private GL gl;
     private final GLCanvas canvas;
     
     private int width = 100;
     private int height = 100;
-	private int list;
 	
-	private double maxY = Double.NEGATIVE_INFINITY;
-	private double maxX = Double.NEGATIVE_INFINITY;
-	private double minX = Double.POSITIVE_INFINITY;
+	private LSystem lSystem;
+	private int depth;
+	
+    private Turtle drawTurtle;
+    private Turtle metricTurtle;
+    private BoundCanvas boundCanvas;
 	
 	public SimpleRenderer(GLCanvas canvas) {
 		this.canvas = canvas;
@@ -34,42 +36,29 @@ public class SimpleRenderer implements GLEventListener, MouseWheelListener {
         
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		
-		Turtle turtle = new Turtle(this, 1.0, 1.0);
-        
-        LSystem anObject = new LSystem("X", new String[][] {
+		drawTurtle = new Turtle(this, 1.0, 1.0);
+		boundCanvas = new BoundCanvas();
+        metricTurtle = new Turtle(boundCanvas, 1.0, 1.0);
+		
+        lSystem = new LSystem("X", new String[][] {
                 {"F", "FF"},
                 {"X", "F[+X]F[-X]+X"}}, "Sticks");
         
-//		LSystem anObject = new LSystem("[F]+[F]+[F]+[F]+[F]+[F]", new String[][]{
-//                {"F", "F[++F][--F][-FF][+FF]FF[+F][-F]FF"}}, "Snowflake");
+        metricTurtle.draw(lSystem.getResult(4), new State(0, 10, 0));
         
-        list = gl.glGenLists(1);
-        
-        gl.glNewList(list, GL.GL_COMPILE);
-        gl.glColor3d(1.0, 0.0, 0.0);
-        gl.glBegin(GL.GL_LINES);
-        turtle.draw(anObject.getResult(4), new State(0, 10, 0));
-        gl.glEnd();
-        gl.glEndList();
-        
-        width = (int) (maxX - minX);
-        height = (int) (maxY + 10);
+        width = (int) boundCanvas.getBounds().getWidth();
+        height = (int) boundCanvas.getBounds().getHeight() + 10;
 	}
 
 	public void setSystem(LSystem lSystem, int depth, double angle) {
-		Turtle turtle = new Turtle(this, 1.0, angle);
+        drawTurtle = new Turtle(this, 1.0, angle);
+        //boundCanvas = new BoundCanvas();
+        metricTurtle = new Turtle(boundCanvas, 1.0, angle);
+        this.depth = depth;
+        metricTurtle.draw(lSystem.getResult(depth), new State(0, 10, 0));
         
-        list = gl.glGenLists(1);
-        
-        gl.glNewList(list, GL.GL_COMPILE);
-        gl.glColor3d(1.0, 0.0, 0.0);
-        gl.glBegin(GL.GL_LINES);
-        turtle.draw(lSystem.getResult(depth), new State(0, 10, 0));
-        gl.glEnd();
-        gl.glEndList();
-        
-        width = (int) (maxX - minX);
-        height = (int) (maxY + 10);
+        width = (int) boundCanvas.getBounds().getWidth();
+        height = (int) boundCanvas.getBounds().getHeight() + 10;
         
         reshape();
 	}
@@ -78,30 +67,18 @@ public class SimpleRenderer implements GLEventListener, MouseWheelListener {
 	public void display(GLAutoDrawable drawable) {
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         gl.glTranslated(width/2, 0, 0);
-        gl.glCallList(list);
+        
+        gl.glColor3d(1.0, 0.0, 0.0);
+        
+        gl.glBegin(GL.GL_LINES);
+        drawTurtle.draw(lSystem.getResult(depth), new State(0, 10, 0));
+        gl.glEnd();
+        
         gl.glTranslated(-width/2, 0, 0);
         gl.glFlush();
 	}
 
 	public void drawLine(double x1, double y1, double x2, double y2) {
-		if (y1 > maxY) {
-			maxY = y1;
-		}
-		if (y2 > maxY) {
-			maxY = y2;
-		}
-		if (x1 > maxX) {
-			maxX = x1;
-		}
-		if (x2 > maxX) {
-			maxX = x2;
-		}
-		if (x1 < minX) {
-			minX = x1;
-		}
-		if (x2 < minX) {
-			minX = x2;
-		}
 		gl.glVertex2d(x1, y1);
 		gl.glVertex2d(x2, y2);
 	}
