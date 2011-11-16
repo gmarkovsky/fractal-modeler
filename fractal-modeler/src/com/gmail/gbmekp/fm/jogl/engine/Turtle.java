@@ -2,7 +2,7 @@ package com.gmail.gbmekp.fm.jogl.engine;
 
 import java.util.Stack;
 
-import com.gmail.gbmekp.fm.j2d.engine.Vector;
+import com.gmail.gbmekp.fm.common.Vector;
 import com.gmail.gbmekp.fm.jogl.LineCanvas;
 
 public class Turtle {

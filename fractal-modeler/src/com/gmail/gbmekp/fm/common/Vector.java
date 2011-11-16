@@ -1,4 +1,4 @@
-package com.gmail.gbmekp.fm.j2d.engine;
+package com.gmail.gbmekp.fm.common;
 
 import java.awt.geom.Point2D;
 
