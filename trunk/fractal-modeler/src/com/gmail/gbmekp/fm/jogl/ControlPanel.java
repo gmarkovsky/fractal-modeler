@@ -28,7 +28,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 
-import com.gmail.gbmekp.fm.jogl.engine.LSystem;
+import com.gmail.gbmekp.fm.engine.LSystem;
 
 public class ControlPanel extends JPanel {
     private static final long serialVersionUID = 2183516033772822907L;

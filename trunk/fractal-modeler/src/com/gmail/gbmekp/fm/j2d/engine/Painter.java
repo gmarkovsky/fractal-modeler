@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
+import com.gmail.gbmekp.fm.engine.LSystem;
+
 public class Painter {
     public static final int DEFAULT_WIDTH = 450;
     public static final int DEFAULT_HEIGHT = 450;

@@ -1,4 +1,4 @@
-package com.gmail.gbmekp.fm.jogl.engine;
+package com.gmail.gbmekp.fm.engine;
 
 import java.util.HashMap;
 import java.util.Map;

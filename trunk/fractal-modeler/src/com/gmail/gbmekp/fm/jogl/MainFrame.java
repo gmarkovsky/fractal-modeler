@@ -7,7 +7,7 @@ import java.awt.Insets;
 import javax.media.opengl.GLCanvas;
 import javax.swing.JFrame;
 
-import com.gmail.gbmekp.fm.jogl.engine.LSystem;
+import com.gmail.gbmekp.fm.engine.LSystem;
 
 public class MainFrame extends JFrame {
 	private static final long serialVersionUID = 8758921724990944528L;
