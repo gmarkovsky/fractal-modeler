@@ -1,20 +1,27 @@
-package com.gmail.gbmekp.fm.jogl.engine;
+package com.gmail.gbmekp.fm.j2d;
 
 import java.util.Stack;
 
-import com.gmail.gbmekp.fm.jogl.LineCanvas;
+import com.gmail.gbmekp.fm.engine.Vector;
 
 public class Turtle {
-    private final LineCanvas canvas;
+	private final Vector forceVector = new Vector(0, -1);
+	private boolean force;
+    private final Canvas canvas;
     private State state;
     private Stack<State> memory = new Stack<State>();
     private final double stepLength;
     private final double deltaAngle;
 
-    public Turtle(LineCanvas canvas, double stepLength, double deltaAngle) {
+    public Turtle(Canvas canvas, double stepLength, double deltaAngle) {
+        this(canvas, stepLength, deltaAngle, false);
+    }
+    
+    public Turtle(Canvas canvas, double stepLength, double deltaAngle, boolean force) {
         this.canvas = canvas;
         this.stepLength = stepLength;
         this.deltaAngle = deltaAngle;
+        this.force = force;
     }
     
     public void draw(String string, State first) {
@@ -50,18 +57,49 @@ public class Turtle {
         double oldY = state.getY();
         double angle = state.getAngle();
         
-        double newX = oldX + Math.sin(angle) * stepLength;
-        double newY = oldY + Math.cos(angle) * stepLength;
+        double newX = oldX + Math.cos(angle) * stepLength;
+        double newY = oldY - Math.sin(angle) * stepLength;
+        
+        Vector h = new Vector(oldX, oldY, newX, newY);
+        //System.out.println(h);
+        double a = h.angle(forceVector);
+        if (a > Math.PI/2) {
+        	a = Math.PI/2 - a;
+        }
+        //System.out.println(a);
+        double da = Math.sin(a) * Math.PI / 32;
+
+        //System.out.println("da=" + da);
+        if (!force) {
+        	da = 0;
+        }
+        newX = oldX + Math.cos(angle + da) * stepLength;
+        newY = oldY - Math.sin(angle + da) * stepLength;
+        Vector h1 = new Vector(oldX, oldY, newX, newY);
+        newX = oldX + Math.cos(angle - da) * stepLength;
+        newY = oldY - Math.sin(angle - da) * stepLength;
+        Vector h2 = new Vector(oldX, oldY, newX, newY);
+        
+        if (h.dot(h1) < h.dot(h2)) {
+        	da = -da;
+        }
+        newX = oldX + Math.cos(angle + da) * stepLength;
+        newY = oldY - Math.sin(angle + da) * stepLength;
+        //System.out.println("{"+oldX+","+oldY+","+newX+","+newY+"}");
         canvas.drawLine(oldX, oldY, newX, newY);
-        state = new State(newX, newY, angle);
+        state = new State(newX, newY, angle + da);
+        
+//        System.out.print(stepLength);
+//    	System.out.print(" x="+ oldX);
+//    	System.out.println(" y="+oldY);
     }
 
     private void moveStep() {
         double oldX = state.getX();
         double oldY = state.getY();
         double angle = state.getAngle();
-        double newX = oldX + Math.sin(angle) * stepLength;
-        double newY = oldY + Math.cos(angle) * stepLength;
+        double newX = oldX + Math.cos(angle) * stepLength;
+        double newY = oldY - Math.sin(angle) * stepLength;
         state = new State(newX, newY, angle);
     }
 

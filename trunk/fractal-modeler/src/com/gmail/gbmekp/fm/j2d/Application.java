@@ -2,8 +2,6 @@ package com.gmail.gbmekp.fm.j2d;
 
 import javax.swing.SwingUtilities;
 
-import com.gmail.gbmekp.fm.j2d.gui.MainFrame;
-
 /**
  * Запускаемая единица.
  * 

@@ -9,8 +9,6 @@ import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 
 import com.gmail.gbmekp.fm.engine.LSystem;
-import com.gmail.gbmekp.fm.jogl.engine.State;
-import com.gmail.gbmekp.fm.jogl.engine.Turtle;
 
 public class SimpleRenderer implements GLEventListener, MouseWheelListener, LineCanvas {
     private GL gl;

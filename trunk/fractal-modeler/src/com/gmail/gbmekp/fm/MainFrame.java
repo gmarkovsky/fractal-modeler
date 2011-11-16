@@ -9,7 +9,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import com.gmail.gbmekp.fm.j2d.gui.ImagePanel;
+import com.gmail.gbmekp.fm.j2d.ImagePanel;
 
 /**
  * Главное окно приложения.

@@ -1,4 +1,4 @@
-package com.gmail.gbmekp.fm.j2d.engine;
+package com.gmail.gbmekp.fm.j2d;
 
 import java.awt.Graphics;
 

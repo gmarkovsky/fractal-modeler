@@ -1,4 +1,4 @@
-package com.gmail.gbmekp.fm.jogl.engine;
+package com.gmail.gbmekp.fm.j2d;
 
 public class State {
     private double x;

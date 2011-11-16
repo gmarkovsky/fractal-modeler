@@ -1,4 +1,4 @@
-package com.gmail.gbmekp.fm.j2d.gui;
+package com.gmail.gbmekp.fm.j2d;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -30,7 +30,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 
 import com.gmail.gbmekp.fm.engine.LSystem;
-import com.gmail.gbmekp.fm.j2d.engine.Painter;
 
 public class ControlPanel extends JPanel {
     private static final long serialVersionUID = 2183516033772822907L;
