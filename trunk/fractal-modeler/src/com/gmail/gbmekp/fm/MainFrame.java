@@ -4,7 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -12,6 +14,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import com.gmail.gbmekp.fm.j2d.ImagePanel;
+import com.gmail.gbmekp.fm.jogl.JoglCanvas;
 
 /**
  * Главное окно приложения.
@@ -37,7 +40,7 @@ public class MainFrame extends JFrame {
 		
 		initMenu();
 		initComponents();
-		initJava2D();
+		initOpenGL();
 		setSize(WIDTH, HEIGHT);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,6 +51,26 @@ public class MainFrame extends JFrame {
 		JMenuBar menu = new JMenuBar();
 		
 		JMenu fileMenu = new JMenu("Файл");
+		
+		JMenu modeMenu = new JMenu("Режим");
+		
+		modeMenu.add(new AbstractAction("Java 2D") {
+			private static final long serialVersionUID = 4147074802769544221L;
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				initJava2D();
+			}
+		});
+		
+		modeMenu.add(new AbstractAction("OpenGL") {
+			private static final long serialVersionUID = -1410931317991814774L;
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				initOpenGL();
+			}
+		});
 		
 		JMenuItem exitItem = new JMenuItem("Выход");
 		
@@ -60,6 +83,7 @@ public class MainFrame extends JFrame {
 		helpMenu.add(aboutItem);
 		
 		menu.add(fileMenu);
+		menu.add(modeMenu);
 		menu.add(helpMenu);
 		
 		setJMenuBar(menu);
@@ -86,11 +110,10 @@ public class MainFrame extends JFrame {
         controller.setCanvas(imagePanel);
 	}
 	
-	@SuppressWarnings("unused")
 	private void initOpenGL() {
-        ImagePanel imagePanel = new ImagePanel();
+        JoglCanvas joglCanvas = new JoglCanvas();
         wrapper.removeAll();
-		wrapper.add(imagePanel);
-        controller.setCanvas(imagePanel);
+		wrapper.add(joglCanvas);
+        controller.setCanvas(joglCanvas);
 	}
 }
