@@ -1,5 +1,6 @@
 package com.gmail.gbmekp.fm;
 
+import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -8,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 
 import com.gmail.gbmekp.fm.j2d.ImagePanel;
 
@@ -25,6 +27,7 @@ public class MainFrame extends JFrame {
 
 	private final ControlPanel controls;
 	private final Controller controller;
+	private JPanel wrapper;
 	
 	public MainFrame() {
 		super(TITLE);
@@ -34,7 +37,7 @@ public class MainFrame extends JFrame {
 		
 		initMenu();
 		initComponents();
-		
+		initJava2D();
 		setSize(WIDTH, HEIGHT);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,13 +69,28 @@ public class MainFrame extends JFrame {
 	private void initComponents() {
 	    setLayout(new GridBagLayout());
 	    
-		ImagePanel comp = new ImagePanel();
-        add(comp, new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0,
+	    wrapper = new JPanel(new BorderLayout());
+        add(wrapper, new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0,
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH, 
                 new Insets(0, 0, 0, 0), 0, 0));
-        
+		
         add(controls, new GridBagConstraints(1, 0, 1, 1, 0.0, 1.0,
                 GridBagConstraints.EAST, GridBagConstraints.VERTICAL, 
                 new Insets(0, 0, 0, 0), 0, 0));
+	}
+	
+	private void initJava2D() {
+        ImagePanel imagePanel = new ImagePanel();
+        wrapper.removeAll();
+		wrapper.add(imagePanel);
+        controller.setCanvas(imagePanel);
+	}
+	
+	@SuppressWarnings("unused")
+	private void initOpenGL() {
+        ImagePanel imagePanel = new ImagePanel();
+        wrapper.removeAll();
+		wrapper.add(imagePanel);
+        controller.setCanvas(imagePanel);
 	}
 }

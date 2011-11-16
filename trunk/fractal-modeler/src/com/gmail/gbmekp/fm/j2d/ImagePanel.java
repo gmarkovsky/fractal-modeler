@@ -6,7 +6,10 @@ import java.awt.Image;
 
 import javax.swing.JPanel;
 
-public class ImagePanel extends JPanel {
+import com.gmail.gbmekp.fm.FractalCanvas;
+import com.gmail.gbmekp.fm.engine.LSystem;
+
+public class ImagePanel extends JPanel implements FractalCanvas {
     private static final long serialVersionUID = -728123946092154157L;
 
     private Image image;
@@ -26,4 +29,10 @@ public class ImagePanel extends JPanel {
             G.drawImage(image, 0, 0, null);
         }
     }
+
+	@Override
+	public void paintFractal(LSystem lSystem, int dAplha, int depth) {
+		setImage(Painter.draw(getWidth(), getHeight(), 0, lSystem, dAplha, depth));
+		repaint();
+	}
 }
