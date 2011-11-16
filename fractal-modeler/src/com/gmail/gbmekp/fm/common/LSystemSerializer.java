@@ -25,7 +25,7 @@ import org.w3c.dom.ls.LSOutput;
 import org.w3c.dom.ls.LSParser;
 import org.w3c.dom.ls.LSSerializer;
 
-import com.gmail.gbmekp.fm.j2d.engine.LSystem;
+import com.gmail.gbmekp.fm.engine.LSystem;
 
 public class LSystemSerializer {
 	

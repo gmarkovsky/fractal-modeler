@@ -1,10 +1,9 @@
-package com.gmail.gbmekp.fm.j2d.gui;
+package com.gmail.gbmekp.fm;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,28 +29,56 @@ import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 
 import com.gmail.gbmekp.fm.engine.LSystem;
-import com.gmail.gbmekp.fm.j2d.engine.Painter;
 
+/**
+ * Панель управления отображения.
+ * 
+ * @author george
+ *
+ */
 public class ControlPanel extends JPanel {
     private static final long serialVersionUID = 2183516033772822907L;
+    
+    /**
+     * Аксиома.
+     */
     private JTextField axiom;
+    
+    /**
+     * Изменение угла.
+     */
     private JSpinner deltaAngle;
-    private JSpinner angle;
+    
+    /**
+     * Число итераций.
+     */
     private JSpinner iteration;
+    
+    /**
+     * Текст кода Л-системы.
+     */
     private JTextField code;
+    
+    /**
+     * Признак наличия силового поля.
+     */
     private JCheckBox force;
     
+    /**
+     * Л-симтема.
+     */
     private JComboBox lSystems;
-    
-    private final ImagePanel imagePanel;
     
     private JButton paint;
     private JTable table;
     
-    public ControlPanel(ImagePanel imagePanel) {
+    private final Controller controller;
+    
+    public ControlPanel(Controller controller) {
         super(new GridBagLayout());
-        this.imagePanel = imagePanel;
-        // TODO Auto-generated constructor stub
+        
+        this.controller = controller;
+        
         initComponents();
         initListeners();
         initData();
@@ -82,15 +109,6 @@ public class ControlPanel extends JPanel {
                 GridBagConstraints.WEST, GridBagConstraints.NONE, 
                 new Insets(0, 0, 0, 0), 0, 0));
         add(deltaAngle, new GridBagConstraints(1, 3, 1, 1, 1.0, 0.0,
-                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, 
-                new Insets(0, 0, 0, 0), 0, 0));
-        
-        angle = new JSpinner(new SpinnerNumberModel(90, 0, 90, 1));
-        
-        add(new JLabel("Угол"), new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.NONE, 
-                new Insets(0, 0, 0, 0), 0, 0));
-        add(angle, new GridBagConstraints(1, 4, 1, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, 
                 new Insets(0, 0, 0, 0), 0, 0));
         
@@ -182,13 +200,6 @@ public class ControlPanel extends JPanel {
                 paintFractal();
             }
         });
-        angle.getModel().addChangeListener(new ChangeListener() {
-            
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                paintFractal();
-            }
-        });
         
         table.addMouseListener(new MouseAdapter() {
         	@Override
@@ -228,38 +239,11 @@ public class ControlPanel extends JPanel {
                 {"F", "FF"},
                 {"X", "F[+X]F[-X]+X"}}, "Sticks");
 		lSystems.addItem(anObject);
-		
-//		ByteArrayOutputStream write = LSystemSerializer.write(anObject);
-//		FileOutputStream fw = null;
-//		try {
-//			fw = new FileOutputStream("/home/george/lsdd.xml");
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		}
-//		try {
-//			write.writeTo(fw);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//        FileInputStream fr = null;
-//		try {
-//			fr = new FileInputStream("/home/george/lsdd.xml");
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		}
-//        LSystem lss = null;
-//		try {
-//			lss = LSystemSerializer.parse(fr);
-//		} catch (LSystemLoadException e) {
-//			e.printStackTrace();
-//		}
-//        lSystems.addItem(lss);
     }
     
     public void paintFractal() {
         int depth = (Integer) iteration.getValue();
         int dAng = (Integer) deltaAngle.getValue();
-        int ang = (Integer) angle.getValue();
         String a = axiom.getText();
         
         String[][] ss = new String[table.getRowCount()][2];
@@ -271,10 +255,8 @@ public class ControlPanel extends JPanel {
 
         LSystem lSystem = new LSystem(a, ss);
         code.setText(lSystem.getResult(depth));
-		Image image = Painter.draw(imagePanel.getWidth(), imagePanel.getHeight(), 10,
-        		lSystem, Math.PI * dAng/ 180, depth, Math.PI * ang/ 180, force.isSelected());
-        imagePanel.setImage(image);
-        imagePanel.repaint();
+        
+		controller.paintFractal(lSystem, dAng, depth);
     }
     
     private void initFields(LSystem system) {

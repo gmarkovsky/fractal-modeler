@@ -2,6 +2,8 @@ package com.gmail.gbmekp.fm.j2d.engine;
 
 import java.awt.Image;
 
+import com.gmail.gbmekp.fm.engine.LSystem;
+
 public class Collection {
 
     public static Image drawKochCurve(int depth) {
