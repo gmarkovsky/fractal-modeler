@@ -7,13 +7,15 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 
-import com.gmail.gbmekp.fm.j2d.ImagePanel;
+import com.gmail.gbmekp.fm.j2d.J2DPanel;
 import com.gmail.gbmekp.fm.jogl.JoglCanvas;
 
 /**
@@ -40,7 +42,9 @@ public class MainFrame extends JFrame {
 		
 		initMenu();
 		initComponents();
-		initOpenGL();
+		
+		initJava2D();
+		
 		setSize(WIDTH, HEIGHT);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -54,7 +58,7 @@ public class MainFrame extends JFrame {
 		
 		JMenu modeMenu = new JMenu("Режим");
 		
-		modeMenu.add(new AbstractAction("Java 2D") {
+		JRadioButtonMenuItem j2dItem = new JRadioButtonMenuItem(new AbstractAction("Java 2D") {
 			private static final long serialVersionUID = 4147074802769544221L;
 
 			@Override
@@ -62,8 +66,10 @@ public class MainFrame extends JFrame {
 				initJava2D();
 			}
 		});
+		j2dItem.setSelected(true);
+		modeMenu.add(j2dItem);
 		
-		modeMenu.add(new AbstractAction("OpenGL") {
+		JRadioButtonMenuItem joglItem = new JRadioButtonMenuItem(new AbstractAction("OpenGL") {
 			private static final long serialVersionUID = -1410931317991814774L;
 
 			@Override
@@ -71,6 +77,11 @@ public class MainFrame extends JFrame {
 				initOpenGL();
 			}
 		});
+		modeMenu.add(joglItem);
+		
+		ButtonGroup group = new ButtonGroup();
+		group.add(j2dItem);
+		group.add(joglItem);
 		
 		JMenuItem exitItem = new JMenuItem("Выход");
 		
@@ -104,9 +115,10 @@ public class MainFrame extends JFrame {
 	}
 	
 	private void initJava2D() {
-        ImagePanel imagePanel = new ImagePanel();
+        J2DPanel imagePanel = new J2DPanel();
         wrapper.removeAll();
 		wrapper.add(imagePanel);
+		wrapper.revalidate();
         controller.setCanvas(imagePanel);
 	}
 	
@@ -114,6 +126,7 @@ public class MainFrame extends JFrame {
         JoglCanvas joglCanvas = new JoglCanvas();
         wrapper.removeAll();
 		wrapper.add(joglCanvas);
+		wrapper.revalidate();
         controller.setCanvas(joglCanvas);
 	}
 }
