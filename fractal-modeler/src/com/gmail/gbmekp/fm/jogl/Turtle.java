@@ -2,6 +2,8 @@ package com.gmail.gbmekp.fm.jogl;
 
 import java.util.Stack;
 
+import com.gmail.gbmekp.fm.engine.State;
+
 public class Turtle {
     private final LineCanvas canvas;
     private State state;
