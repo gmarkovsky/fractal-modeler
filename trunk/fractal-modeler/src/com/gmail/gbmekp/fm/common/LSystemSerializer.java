@@ -1,4 +1,4 @@
-package com.gmail.gbmekp.fm.j2d.io;
+package com.gmail.gbmekp.fm.common;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

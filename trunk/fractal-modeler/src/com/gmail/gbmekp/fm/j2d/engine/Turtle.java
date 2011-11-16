@@ -2,6 +2,8 @@ package com.gmail.gbmekp.fm.j2d.engine;
 
 import java.util.Stack;
 
+import com.gmail.gbmekp.fm.common.Vector;
+
 public class Turtle {
 	private final Vector forceVector = new Vector(0, -1);
 	private boolean force;
