@@ -29,6 +29,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 
 import com.gmail.gbmekp.fm.engine.LSystem;
+import com.gmail.gbmekp.fm.engine.Vector;
 
 /**
  * Панель управления отображения.
@@ -74,6 +75,10 @@ public class ControlPanel extends JPanel {
     
     private final Controller controller;
     
+    private JSpinner forceX;
+    
+    private JSpinner forceY;
+    
     public ControlPanel(Controller controller) {
         super(new GridBagLayout());
         
@@ -83,7 +88,7 @@ public class ControlPanel extends JPanel {
         initListeners();
         initData();
         
-        lSystems.setSelectedIndex(5);
+        lSystems.setSelectedIndex(6);
     }
 
 
@@ -112,7 +117,7 @@ public class ControlPanel extends JPanel {
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, 
                 new Insets(0, 0, 0, 0), 0, 0));
         
-        iteration = new JSpinner(new SpinnerNumberModel(3, 0, 10, 1));
+        iteration = new JSpinner(new SpinnerNumberModel(4, 0, 10, 1));
         
         add(new JLabel("Шагов"), new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, 
@@ -132,8 +137,20 @@ public class ControlPanel extends JPanel {
                 GridBagConstraints.EAST, GridBagConstraints.NONE, 
                 new Insets(0, 0, 0, 0), 0, 0));
         
+        SpinnerNumberModel sm = new SpinnerNumberModel(0.0, -100, 100, 0.1);
+        forceX = new JSpinner(sm);
+        add(forceX, new GridBagConstraints(0, 8, 1, 1, 1.0, 0.0,
+                GridBagConstraints.EAST, GridBagConstraints.NONE, 
+                new Insets(0, 0, 0, 0), 0, 0));
+        
+        sm = new SpinnerNumberModel(-1.0, -100, 100, 0.1);
+        forceY = new JSpinner(sm);
+        add(forceY, new GridBagConstraints(1, 8, 1, 1, 1.0, 0.0,
+                GridBagConstraints.EAST, GridBagConstraints.NONE, 
+                new Insets(0, 0, 0, 0), 0, 0));
+        
         code = new JTextField();
-        add(code, new GridBagConstraints(0, 8, 2, 1, 1.0, 0.0,
+        add(code, new GridBagConstraints(0, 9, 2, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, 
                 new Insets(0, 0, 0, 0), 0, 0));
         
@@ -216,6 +233,20 @@ public class ControlPanel extends JPanel {
 				paintFractal();
 			}
 		});
+        forceX.getModel().addChangeListener(new ChangeListener() {
+            
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                paintFractal();
+            }
+        });
+        forceY.getModel().addChangeListener(new ChangeListener() {
+            
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                paintFractal();
+            }
+        });
     }
 
     private void initData() {
@@ -256,7 +287,10 @@ public class ControlPanel extends JPanel {
         LSystem lSystem = new LSystem(a, ss);
         code.setText(lSystem.getResult(depth));
         
-		controller.paintFractal(lSystem, dAng, depth);
+        double fx = (Double) forceX.getValue();
+        double fy = (Double) forceY.getValue();
+        
+		controller.paintFractal(lSystem, dAng, depth, force.isSelected(), new Vector(fx, fy));
     }
     
     private void initFields(LSystem system) {

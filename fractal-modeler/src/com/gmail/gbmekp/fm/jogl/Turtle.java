@@ -3,8 +3,11 @@ package com.gmail.gbmekp.fm.jogl;
 import java.util.Stack;
 
 import com.gmail.gbmekp.fm.engine.State;
+import com.gmail.gbmekp.fm.engine.Vector;
 
 public class Turtle {
+	private Vector g = new Vector(0, -1);
+	private boolean force;
     private final LineCanvas canvas;
     private State state;
     private Stack<State> memory = new Stack<State>();
@@ -12,9 +15,15 @@ public class Turtle {
     private final double deltaAngle;
 
     public Turtle(LineCanvas canvas, double stepLength, double deltaAngle) {
+        this(canvas, stepLength, deltaAngle, false, new Vector(1, 1));
+    }
+    
+    public Turtle(LineCanvas canvas, double stepLength, double deltaAngle, boolean force, Vector vector) {
         this.canvas = canvas;
         this.stepLength = stepLength;
         this.deltaAngle = deltaAngle;
+        this.force = force;
+        this.g = vector;
     }
     
     public void draw(String string, State first) {
@@ -52,6 +61,34 @@ public class Turtle {
         
         double newX = oldX + Math.sin(angle) * stepLength;
         double newY = oldY + Math.cos(angle) * stepLength;
+        
+        Vector v = new Vector(newX, newY);
+        
+        double alpha = v.angle(g);
+        
+        double da = Math.sin(alpha) * Math.PI / 16 * g.modul();
+        
+        newX = oldX + Math.sin(angle - da) * stepLength;
+        newY = oldY + Math.cos(angle - da) * stepLength;
+        
+        Vector v1 = new Vector(newX, newY);
+        
+        newX = oldX + Math.sin(angle + da) * stepLength;
+        newY = oldY + Math.cos(angle + da) * stepLength;
+        
+        Vector v2 = new Vector(newX, newY);
+        
+        if (v1.angle(g) < v2.angle(g)) {
+        	da = - da;
+        }
+        
+        if (!force) {
+        	da = 0;
+        }
+        
+        newX = oldX + Math.sin(angle + da) * stepLength;
+        newY = oldY + Math.cos(angle + da) * stepLength;
+        
         canvas.drawLine(oldX, oldY, newX, newY);
         state = new State(newX, newY, angle);
     }
