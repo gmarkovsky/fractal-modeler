@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 
 import com.gmail.gbmekp.fm.FractalCanvas;
 import com.gmail.gbmekp.fm.engine.LSystem;
+import com.gmail.gbmekp.fm.engine.Vector;
 
 public class J2DPanel extends JPanel implements FractalCanvas {
     private static final long serialVersionUID = -728123946092154157L;
@@ -31,8 +32,8 @@ public class J2DPanel extends JPanel implements FractalCanvas {
     }
 
 	@Override
-	public void paintFractal(LSystem lSystem, int dAplha, int depth) {
-		setImage(Painter.draw(getWidth(), getHeight(), 0, lSystem, dAplha, depth));
+	public void paintFractal(LSystem lSystem, int dAplha, int depth, boolean force, Vector vector) {
+		setImage(Painter.draw(getWidth(), getHeight(), 0, lSystem, dAplha * Math.PI / 180, depth));
 		repaint();
 	}
 }

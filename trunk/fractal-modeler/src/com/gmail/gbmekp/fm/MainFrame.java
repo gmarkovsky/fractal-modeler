@@ -43,7 +43,7 @@ public class MainFrame extends JFrame {
 		initMenu();
 		initComponents();
 		
-		initJava2D();
+		initOpenGL();
 		
 		setSize(WIDTH, HEIGHT);
 		setLocationRelativeTo(null);
@@ -66,7 +66,7 @@ public class MainFrame extends JFrame {
 				initJava2D();
 			}
 		});
-		j2dItem.setSelected(true);
+		
 		modeMenu.add(j2dItem);
 		
 		JRadioButtonMenuItem joglItem = new JRadioButtonMenuItem(new AbstractAction("OpenGL") {
@@ -77,16 +77,23 @@ public class MainFrame extends JFrame {
 				initOpenGL();
 			}
 		});
+		joglItem.setSelected(true);
 		modeMenu.add(joglItem);
 		
 		ButtonGroup group = new ButtonGroup();
 		group.add(j2dItem);
 		group.add(joglItem);
 		
-		JMenuItem exitItem = new JMenuItem("Выход");
 		
 		fileMenu.addSeparator();
-		fileMenu.add(exitItem);
+		fileMenu.add(new AbstractAction("Выход") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
 		
 		JMenu helpMenu = new JMenu("Справка");
 		JMenuItem aboutItem = new JMenuItem("О программе");

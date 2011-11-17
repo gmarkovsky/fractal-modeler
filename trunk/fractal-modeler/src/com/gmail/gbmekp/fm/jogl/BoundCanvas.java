@@ -4,6 +4,7 @@ import java.awt.geom.Rectangle2D;
 
 public class BoundCanvas implements LineCanvas {
     private double maxY = Double.NEGATIVE_INFINITY;
+    private double minY = Double.POSITIVE_INFINITY;
     private double maxX = Double.NEGATIVE_INFINITY;
     private double minX = Double.POSITIVE_INFINITY;
     
@@ -14,6 +15,12 @@ public class BoundCanvas implements LineCanvas {
         }
         if (y2 > maxY) {
             maxY = y2;
+        }
+        if (y1 < minY) {
+            minY = y1;
+        }
+        if (y2 < minY) {
+            minY = y2;
         }
         if (x1 > maxX) {
             maxX = x1;
@@ -30,6 +37,11 @@ public class BoundCanvas implements LineCanvas {
     }
     
     public Rectangle2D getBounds() {
-        return new Rectangle2D.Double(minX, 0, maxX - minX, maxY);
+        Rectangle2D.Double double1 = new Rectangle2D.Double(minX, minY, maxX - minX, maxY - minY);
+        
+        System.out.println(minY + " " + maxY);
+        
+        System.out.println(double1);
+		return double1;
     }
 }

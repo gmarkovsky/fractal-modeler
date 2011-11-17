@@ -7,11 +7,14 @@ import javax.swing.JPanel;
 
 import com.gmail.gbmekp.fm.FractalCanvas;
 import com.gmail.gbmekp.fm.engine.LSystem;
+import com.gmail.gbmekp.fm.engine.Vector;
 
 public class JoglCanvas extends JPanel implements FractalCanvas {
 	private static final long serialVersionUID = 5271508282265404984L;
+	
 	private GLCanvas canvas;
 	private SimpleRenderer listener;
+	
 	public JoglCanvas() {
 		canvas = new GLCanvas();
         listener = new SimpleRenderer(canvas);
@@ -22,8 +25,8 @@ public class JoglCanvas extends JPanel implements FractalCanvas {
 	}
 	
 	@Override
-	public void paintFractal(LSystem lSystem, int dAplha, int depth) {
-		listener.setSystem(lSystem, depth, dAplha);
+	public void paintFractal(LSystem lSystem, int dAplha, int depth, boolean force, Vector vector) {
+		listener.setSystem(lSystem, depth, dAplha * Math.PI / 180, force, vector);
 		canvas.repaint();
 	}
 }

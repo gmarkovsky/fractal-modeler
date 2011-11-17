@@ -10,6 +10,7 @@ import javax.media.opengl.GLEventListener;
 
 import com.gmail.gbmekp.fm.engine.LSystem;
 import com.gmail.gbmekp.fm.engine.State;
+import com.gmail.gbmekp.fm.engine.Vector;
 
 public class SimpleRenderer implements GLEventListener, MouseWheelListener, LineCanvas {
     private GL gl;
@@ -19,7 +20,7 @@ public class SimpleRenderer implements GLEventListener, MouseWheelListener, Line
     private int height = 100;
 	
 	private LSystem lSystem;
-	private int depth;
+	private int depth = 4;
 	
     private Turtle drawTurtle;
     private Turtle metricTurtle;
@@ -35,29 +36,30 @@ public class SimpleRenderer implements GLEventListener, MouseWheelListener, Line
         
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		
-		drawTurtle = new Turtle(this, 1.0, 1.0);
+		drawTurtle = new Turtle(this, 1.0, 35 * Math.PI / 180);
 		boundCanvas = new BoundCanvas();
-        metricTurtle = new Turtle(boundCanvas, 1.0, 1.0);
+        metricTurtle = new Turtle(boundCanvas, 1.0, 35 * Math.PI / 180);
 		
         lSystem = new LSystem("X", new String[][] {
                 {"F", "FF"},
                 {"X", "F[+X]F[-X]+X"}}, "Sticks");
         
-        metricTurtle.draw(lSystem.getResult(4), new State(0, 10, 0));
+        metricTurtle.draw(lSystem.getResult(4), new State(0, 0, 0));
         
         width = (int) boundCanvas.getBounds().getWidth();
-        height = (int) boundCanvas.getBounds().getHeight() + 10;
+        height = (int) boundCanvas.getBounds().getHeight();
 	}
 
-	public void setSystem(LSystem lSystem, int depth, double angle) {
-        drawTurtle = new Turtle(this, 1.0, angle);
-        //boundCanvas = new BoundCanvas();
+	public void setSystem(LSystem lSystem, int depth, double angle, boolean force, Vector vector) {
+        this.lSystem = lSystem;
+		drawTurtle = new Turtle(this, 1.0, angle, force, vector);
+        boundCanvas = new BoundCanvas();
         metricTurtle = new Turtle(boundCanvas, 1.0, angle);
         this.depth = depth;
-        metricTurtle.draw(lSystem.getResult(depth), new State(0, 10, 0));
+        metricTurtle.draw(lSystem.getResult(depth), new State(0, 0, 0));
         
         width = (int) boundCanvas.getBounds().getWidth();
-        height = (int) boundCanvas.getBounds().getHeight() + 10;
+        height = (int) boundCanvas.getBounds().getHeight();
         
         reshape();
 	}
@@ -65,15 +67,18 @@ public class SimpleRenderer implements GLEventListener, MouseWheelListener, Line
 	@Override
 	public void display(GLAutoDrawable drawable) {
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-        gl.glTranslated(width/2, 0, 0);
+        
+        double dy = boundCanvas.getBounds().getY();
+        
+        gl.glTranslated(width/2, -dy, 0);
         
         gl.glColor3d(1.0, 0.0, 0.0);
         
         gl.glBegin(GL.GL_LINES);
-        drawTurtle.draw(lSystem.getResult(depth), new State(0, 10, 0));
+        	drawTurtle.draw(lSystem.getResult(depth), new State(0, 0, 0));
         gl.glEnd();
         
-        gl.glTranslated(-width/2, 0, 0);
+        gl.glTranslated(-width/2, dy, 0);
         gl.glFlush();
 	}
 
@@ -85,6 +90,9 @@ public class SimpleRenderer implements GLEventListener, MouseWheelListener, Line
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		this.width = this.height * width / height;
+		
+		System.out.print(this.width + " ");
+		System.out.println(this.height);
 		
         gl.glMatrixMode(GL.GL_PROJECTION);
         gl.glLoadIdentity();
