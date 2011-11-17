@@ -38,10 +38,6 @@ public class BoundCanvas implements LineCanvas {
     
     public Rectangle2D getBounds() {
         Rectangle2D.Double double1 = new Rectangle2D.Double(minX, minY, maxX - minX, maxY - minY);
-        
-        System.out.println(minY + " " + maxY);
-        
-        System.out.println(double1);
 		return double1;
     }
 }
