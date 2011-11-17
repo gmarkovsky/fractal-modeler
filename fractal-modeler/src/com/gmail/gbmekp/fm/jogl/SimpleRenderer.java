@@ -91,9 +91,6 @@ public class SimpleRenderer implements GLEventListener, MouseWheelListener, Line
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		this.width = this.height * width / height;
 		
-		System.out.print(this.width + " ");
-		System.out.println(this.height);
-		
         gl.glMatrixMode(GL.GL_PROJECTION);
         gl.glLoadIdentity();
         gl.glOrtho( 0, this.width, 0, this.height, -1, 1 );
