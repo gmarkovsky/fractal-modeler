@@ -99,58 +99,71 @@ public class ControlPanel extends JPanel {
         
         add(lSystems, new GridBagConstraints(0, 0, 2, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, 
-                new Insets(0, 0, 0, 0), 0, 0));
+                new Insets(5, 5, 5, 5), 0, 0));
         
         add(new JLabel("Аксиома"), new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, 
-                new Insets(0, 0, 0, 0), 0, 0));
+                new Insets(0, 5, 5, 5), 0, 0));
         add(axiom, new GridBagConstraints(1, 1, 2, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, 
-                new Insets(0, 0, 0, 0), 0, 0));
+                new Insets(0, 0, 5, 5), 0, 0));
         
         deltaAngle = new JSpinner(new SpinnerNumberModel(35, 1, 90, 1));
         
         add(new JLabel("Изменение угла"), new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, 
-                new Insets(0, 0, 0, 0), 0, 0));
+                new Insets(0, 5, 5, 5), 0, 0));
         add(deltaAngle, new GridBagConstraints(1, 3, 1, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, 
-                new Insets(0, 0, 0, 0), 0, 0));
+                new Insets(0, 0, 5, 5), 0, 0));
         
         iteration = new JSpinner(new SpinnerNumberModel(4, 0, 10, 1));
         
         add(new JLabel("Шагов"), new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.NONE, 
-                new Insets(0, 0, 0, 0), 0, 0));
+                new Insets(0, 5, 5, 5), 0, 0));
         add(iteration, new GridBagConstraints(1, 5, 1, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, 
-                new Insets(0, 0, 0, 0), 0, 0));
+                new Insets(0, 0, 5, 5), 0, 0));
         
         paint = new JButton("Нарисовать");
         
         add(paint, new GridBagConstraints(0, 6, 2, 1, 1.0, 0.0,
                 GridBagConstraints.EAST, GridBagConstraints.NONE, 
-                new Insets(0, 0, 0, 0), 0, 0));
+                new Insets(0, 5, 5, 5), 0, 0));
         
-        force = new JCheckBox("Поле");
-        add(force, new GridBagConstraints(0, 7, 2, 1, 1.0, 0.0,
-                GridBagConstraints.EAST, GridBagConstraints.NONE, 
-                new Insets(0, 0, 0, 0), 0, 0));
+       JPanel wrap = new JPanel(new GridBagLayout());
+       
+       add(wrap, new GridBagConstraints(0, 7, 2, 1, 0.0, 0.0,
+               GridBagConstraints.CENTER, GridBagConstraints.BOTH, 
+               new Insets(0, 5, 5, 5), 0, 0));
+       
+       force = new JCheckBox("Поле");
+       wrap.add(force, new GridBagConstraints(0, 0, 4, 1, 1.0, 0.0,
+               GridBagConstraints.WEST, GridBagConstraints.NONE, 
+               new Insets(0, 5, 5, 5), 0, 0));
         
+       
         SpinnerNumberModel sm = new SpinnerNumberModel(0.0, -100, 100, 0.1);
         forceX = new JSpinner(sm);
-        add(forceX, new GridBagConstraints(0, 8, 1, 1, 1.0, 0.0,
+        wrap.add(new JLabel("x:"), new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0,
                 GridBagConstraints.EAST, GridBagConstraints.NONE, 
-                new Insets(0, 0, 0, 0), 0, 0));
+                new Insets(0, 5, 5, 5), 0, 0));
+        wrap.add(forceX, new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0,
+                GridBagConstraints.EAST, GridBagConstraints.NONE, 
+                new Insets(0, 5, 5, 5), 0, 0));
         
         sm = new SpinnerNumberModel(-1.0, -100, 100, 0.1);
         forceY = new JSpinner(sm);
-        add(forceY, new GridBagConstraints(1, 8, 1, 1, 1.0, 0.0,
+        wrap.add(new JLabel("y:"), new GridBagConstraints(2, 1, 1, 1, 1.0, 0.0,
                 GridBagConstraints.EAST, GridBagConstraints.NONE, 
-                new Insets(0, 0, 0, 0), 0, 0));
+                new Insets(0, 5, 5, 5), 0, 0));
+        wrap.add(forceY, new GridBagConstraints(3, 1, 1, 1, 1.0, 0.0,
+                GridBagConstraints.EAST, GridBagConstraints.NONE, 
+                new Insets(0, 5, 5, 5), 0, 0));
         
         code = new JTextField();
-        add(code, new GridBagConstraints(0, 9, 2, 1, 1.0, 0.0,
+        add(code, new GridBagConstraints(0, 8, 2, 1, 1.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, 
                 new Insets(0, 0, 0, 0), 0, 0));
         

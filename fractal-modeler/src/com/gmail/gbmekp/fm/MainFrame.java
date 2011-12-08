@@ -102,9 +102,9 @@ public class MainFrame extends JFrame {
 		
 		menu.add(fileMenu);
 		menu.add(modeMenu);
-		menu.add(helpMenu);
+		//menu.add(helpMenu);
 		
-		setJMenuBar(menu);
+		//setJMenuBar(menu);
 	}
 
 
