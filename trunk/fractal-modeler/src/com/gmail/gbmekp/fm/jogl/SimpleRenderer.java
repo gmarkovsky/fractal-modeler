@@ -54,7 +54,7 @@ public class SimpleRenderer implements GLEventListener, MouseWheelListener, Line
         this.lSystem = lSystem;
 		drawTurtle = new Turtle(this, 1.0, angle, force, vector);
         boundCanvas = new BoundCanvas();
-        metricTurtle = new Turtle(boundCanvas, 1.0, angle, force, vector);
+        metricTurtle = new Turtle(boundCanvas, 1.0, angle/*, force, vector*/);
         this.depth = depth;
         metricTurtle.draw(lSystem.getResult(depth), new State(0, 0, 0));
         
