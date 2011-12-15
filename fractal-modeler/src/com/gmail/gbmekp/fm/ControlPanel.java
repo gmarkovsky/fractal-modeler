@@ -283,6 +283,8 @@ public class ControlPanel extends JPanel {
                 {"F", "FF"},
                 {"X", "F[+X]F[-X]+X"}}, "Sticks");
 		lSystems.addItem(anObject);
+        lSystems.addItem(new LSystem("X", new String[][]{
+                {"X", "F[++X]-F[--X]X"}}, "Tree"));
     }
     
     public void paintFractal() {
